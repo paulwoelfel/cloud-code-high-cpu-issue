@@ -1,0 +1,87 @@
+# Allow Dataproc access
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampm-my-sandbox-project-dataproc-sa
+  namespace: projects
+spec:
+  member: serviceAccount:12345134-compute@developer.gserviceaccount.com
+  role: roles/dataproc.worker
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    name: my-sandbox-project
+    namespace: projects
+
+---
+# Allow attaching instances to networks
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampm-my-sandbox-project-networkuser-sa
+  namespace: projects
+spec:
+  member: serviceAccount:12345134-compute@developer.gserviceaccount.com
+  role: roles/compute.networkUser
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    name: my-sandbox-project
+    namespace: projects
+
+---
+# Allow logging to Cloud Logging
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampm-my-sandbox-project-logwriter-sa
+  namespace: projects
+spec:
+  member: serviceAccount:12345134-compute@developer.gserviceaccount.com
+  role: roles/logging.logWriter
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    name: my-sandbox-project
+    namespace: projects
+
+---
+# Allow service account to use crypto key
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampm-sa-compute-my-sandbox-project-encrypterdecrypter-euw3
+  namespace: projects
+spec:
+  member: serviceAccount:12345134-compute@developer.gserviceaccount.com
+  role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    external: projects/my-sandbox-project/locations/europe-west4/keyRings/key-ring-my-sandbox-project/cryptoKeys/key-my-sandbox-project
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampm-sa-dataproc-my-sandbox-project-encrypterdecrypter-euw3
+  namespace: projects
+spec:
+  member: serviceAccount:service-12345134@dataproc-accounts.iam.gserviceaccount.com
+  role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    external: projects/my-sandbox-project/locations/europe-west4/keyRings/key-ring-my-sandbox-project/cryptoKeys/key-my-sandbox-project
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampm-sa-dataproc-my-sandbox-project-encrypterdecrypter-euw3
+  namespace: projects
+spec:
+  member: serviceAccount:service-12345134@compute-system.iam.gserviceaccount.com
+  role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    external: projects/my-sandbox-project/locations/europe-west4/keyRings/key-ring-my-sandbox-project/cryptoKeys/key-my-sandbox-project
